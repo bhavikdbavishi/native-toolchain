@@ -1,0 +1,50 @@
+FROM centos:6.6
+
+COPY ./centos/yum-install /usr/local/bin
+
+# https://bugzilla.redhat.com/show_bug.cgi?id=1213602
+RUN yum-install -y yum-plugin-ovl
+RUN yum-install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm
+RUN yum-install -y autoconf \
+  automake \
+  bison \
+  byacc \
+  bzip2 \
+  ccache\
+  curl \
+  cyrus-sasl \
+  cyrus-sasl-gssapi \
+  cyrus-sasl-devel \
+  cyrus-sasl-plain \
+  flex \
+  gcc \
+  gcc-c++ \
+  git \
+  glibc-devel \
+  java-1.8.0-openjdk-devel \
+  krb5-devel \
+  libevent-devel \
+  libffi-devel \
+  libtool \
+  lzo-devel \
+  make \
+  mawk \
+  ncurses-devel \
+  ntp \
+  openssl-devel \
+  pigz \
+  postgresql \
+  postgresql-server \
+  python-devel \
+  redhat-lsb \
+  unzip \
+  vim-common \
+  wget \
+  which \
+  xz \
+  zlib-devel
+
+
+COPY ./all/assert-dependencies-present.py /usr/local/bin
+# Asserts that the packages listed above were correctly installed
+RUN assert-dependencies-present.py

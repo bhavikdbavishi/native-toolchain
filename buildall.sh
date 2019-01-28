@@ -267,9 +267,9 @@ BZIP2_VERSION=1.0.6-p2 $SOURCE_DIR/source/bzip2/build.sh
 # Build GDB
 ################################################################################
 if [[ ! "$RELEASE_NAME" =~ CentOS.*5\.[[:digit:]] ]]; then
-  GDB_VERSION=7.9.1 $SOURCE_DIR/source/gdb/build.sh
+  GDB_VERSION=7.9.1-p1 $SOURCE_DIR/source/gdb/build.sh
 else
-  GDB_VERSION=7.9.1 build_fake_package "gdb"
+  GDB_VERSION=7.9.1-p1 build_fake_package "gdb"
 fi
 
 ################################################################################

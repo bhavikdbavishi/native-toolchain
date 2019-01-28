@@ -60,9 +60,11 @@ if needs_build_package ; then
     wrap autoconf
   fi
 
+  # LEXLIB= is a Workaround /usr/lib64/libfl.so: undefined reference to `yylex'
   PATH="${BISON_ROOT}"/bin:"${PATH}" \
     PY_PREFIX="${LOCAL_INSTALL}"/python \
     wrap ./configure \
+    LEXLIB= \
     --with-pic \
     --prefix="${LOCAL_INSTALL}" \
     --enable-tutorial=no \

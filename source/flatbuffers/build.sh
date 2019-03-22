@@ -36,8 +36,9 @@ if needs_build_package ; then
     # Prevent implicit fallthrough warning in GCC7+ from failing build.
     CXXFLAGS+=" -Wno-error=implicit-fallthrough"
   fi
+  env
   wrap cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=${LOCAL_INSTALL} \
     -DCMAKE_CXX_FLAGS="$CXXFLAGS"
-  wrap make -j${BUILD_THREADS:-4} install
+  wrap make VERBOSE=1 -j${BUILD_THREADS:-4} install
   finalize_package_build $PACKAGE $PACKAGE_VERSION
 fi

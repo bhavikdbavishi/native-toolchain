@@ -22,7 +22,9 @@ import distutils.spawn
 import platform
 import subprocess
 import logging
+import os
 import re
+import shutil
 
 LOG = logging.getLogger('assert-dependencies')
 
@@ -93,7 +95,7 @@ def check_path():
 def check_openssl_version():
   LOG.info('Checking openssl version')
   want = '1.0.1e'
-  distro = platform.dist()[0]
+  distro = platform.dist()[1]
   if distro == 'centos':
     out = check_output(['rpm', '-qa', 'openssl'])[0].rstrip()
     if want not in out:
@@ -111,6 +113,16 @@ def check_aws_works():
 def check_mvn_works():
   LOG.info('Checking that mvn is correctly installed.')
   check_output(['mvn', '--version'])
+
+
+def git_clone_works_with_https():
+  distro, version, _ = platform.dist()
+  if distro == 'centos' and version.startswith('6'):
+    # See: https://github.com/apache/kudu.git/info/refs
+    LOG.info('Checking if git version is new enough to clone from github.com')
+    check_output(['git', 'clone', '--shallow', 'https://github.com/cloudera/kudu.git'])
+    assert os.path.isdir('kudu')
+    shutil.rmtree('kudu')
 
 
 def main():

@@ -441,7 +441,9 @@ function extract_archive() {
   local ARCHIVE=$1
   case "$ARCHIVE" in
     *.tar.gz | *.tgz | *.parcel)
-      tar xzf "$ARCHIVE"
+      local TAR_GZ_ARGS="-xf"
+      command -v pigz &> /dev/null && TAR_GZ_ARGS="--use-compress-program=pigz $TAR_GZ_ARGS"
+      tar $TAR_GZ_ARGS "$ARCHIVE"
       ;;
     *.xz)
       untar_xz "$ARCHIVE"

@@ -66,8 +66,9 @@ if needs_build_package ; then
 
 
   # LEXLIB= is a Workaround /usr/lib64/libfl.so: undefined reference to `yylex'
+  PY_PREFIX="${LOCAL_INSTALL}"/python
   PATH="${BISON_ROOT}"/bin:"${PATH}" \
-    PY_PREFIX="${LOCAL_INSTALL}"/python \
+    PY_PREFIX="${PY_PREFIX}" \
     wrap ./configure \
     LEXLIB= \
     --with-pic \
@@ -114,5 +115,10 @@ if needs_build_package ; then
     --with-java=no --with-php=no --prefix="${LOCAL_INSTALL}" \
     --with-thriftpath="${LOCAL_INSTALL}" ${OPENSSL_ARGS}
   wrap make -j"${BUILD_THREADS}" install
+
+  # Ensure that we've compiled the fastbinary shared object
+  # Some distros place site-packages on lib and others do so in lib64
+  PYTHONPATH=$(find $PY_PREFIX -type d -name 'site-packages' -type d|tr '\n' ':') \
+    python -c 'import thrift.protocol.fastbinary'
   finalize_package_build "${PACKAGE}" "${PACKAGE_VERSION}"
 fi

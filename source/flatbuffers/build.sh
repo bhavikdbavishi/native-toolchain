@@ -37,7 +37,7 @@ if needs_build_package ; then
     CXXFLAGS+=" -Wno-error=implicit-fallthrough"
   fi
   wrap cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=${LOCAL_INSTALL} \
-    -DCMAKE_CXX_FLAGS="$CXXFLAGS"
+    -DCMAKE_CXX_FLAGS="$CXXFLAGS" -DFLATBUFFERS_BUILD_TESTS="OFF"
   wrap make -j${BUILD_THREADS:-4} install
   finalize_package_build $PACKAGE $PACKAGE_VERSION
 fi
